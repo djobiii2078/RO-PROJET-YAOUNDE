@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="MyApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TourYa</title>
+      <link rel="stylesheet" href="./assets/style.css"/>
+    <link rel="stylesheet" href="./bower_components/angular-material/angular-material.css"/>
+
+
+</head>
+
+<body flow-prevent-drop layout="row" ng-controller="workController as work">
+    <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+      <md-toolbar class="md-tall md-hue-2">
+        <span flex></span>
+        <div layout="column" class="md-toolbar-tools-bottom inset">
+          <user-avatar></user-avatar>
+
+        </div>
+      </md-toolbar>
+      <md-list>
+        <md-list-item ng-repeat="item in menu">
+
+
+
+            <div class="md-list-item-text" md-ink-ripple layout="row"  layout-align="start center">
+              <div class="inset">
+                <ng-md-icon icon="{{item.icon}}"></ng-md-icon>
+              </div>
+              <div class="inset">
+
+                PROJET DE RO
+              </div>
+            </div>
+
+
+        </md-list-item>
+      <md-divider></md-divider>
+
+
+    </md-list>
+    </md-sidenav>
+    <div layout="column" class="relative" layout-fill role="main">
+
+      <md-toolbar ng-show="!showSearch">
+        <div class="md-toolbar-tools">
+          <md-button ng-click="toggleSidenav('left')" hide-gt-md aria-label="Menu">
+            <ng-md-icon icon="menu"></ng-md-icon>
+          </md-button>
+          <h3>
+              Tourisme dans la ville de Yaounde
+          </h3>
+          <span flex></span>
+          <md-button aria-label="Search" ng-click="showSearch = !showSearch">
+            <ng-md-icon icon="search"></ng-md-icon>
+          </md-button>
+          <md-button aria-label="Open Settings" ng-click="showListBottomSheet($event)">
+            <ng-md-icon icon="more_vert"></ng-md-icon>
+          </md-button>
+        </div>
+        <md-tabs md-stretch-tabs="always" class="md-primary" md-selected="data.selectedIndex">
+          <md-tab id="tab1" aria-controls="tab1-content">
+              Sites Touristiques
+          </md-tab>
+          <md-tab id="tab2" aria-controls="tab2-content">
+              L'OUTIL D'AIDE
+          </md-tab>
+        </md-tabs>
+      </md-toolbar>
+      <md-toolbar class="md-hue-1" ng-show="showSearch">
+        <div class="md-toolbar-tools">
+          <md-button ng-click="showSearch = !showSearch" aria-label="Retour">
+            <ng-md-icon icon="arrow_back"></ng-md-icon>
+          </md-button>
+          <h3 flex="10">
+            Back
+          </h3>
+          <md-input-container md-theme="input" flex>
+            <label>&nbsp;</label>
+            <input ng-model="search.who" placeholder="enter search">
+          </md-input-container>
+          <md-button aria-label="Search" ng-click="showSearch = !showSearch">
+            <ng-md-icon icon="search"></ng-md-icon>
+          </md-button>
+          <md-button aria-label="Open Settings" ng-click="showListBottomSheet($event)">
+            <ng-md-icon icon="more_vert"></ng-md-icon>
+          </md-button>
+        </div>
+
+      </md-toolbar>
+      <md-content flex md-scroll-y>
+        <ui-view layout="column" layout-fill layout-padding>
+          <div class="inset" hide-sm></div>
+            <ng-switch on="data.selectedIndex" class="tabpanel-container">
+
+
+              <div role="tabpanel"
+                   id="tab1-content"
+                   aria-labelledby="tab1"
+                   ng-switch-when="0"
+                   md-swipe-left="next()"
+                   md-swipe-right="previous()"
+                   layout="row" layout-align="center center">
+
+
+<div flex-xs flex-gt-xs="50" layout="column">
+
+<div id="map">
+
+    <md-card>
+        <md-card-content>
+
+            No cases for the moment. Click on the <b> "+" </b> button below to add a new case.
+        </md-card-content>
+     </md-card>
+</div>
+    <md-card ng-repeat="item in activity | filter:{type:'1'} | filter : search |  orderBy:'-what'">
+       <md-card-title>
+         <md-card-title-text>
+           <span class="md-headline">{{item.who}}</span>
+           <span class="md-subhead">RATING : {{item.stars}}<br/>TEMPS MOYEN : {{item.time}} HEURES <br/> AMOUNT : {{item.amount}} FCFA <br/>
+
+           </span>
+         </md-card-title-text>
+         <md-card-title-media>
+           <div class="md-media-md card-media"><img src="./assets/img/{{item.icon}}"></div>
+         </md-card-title-media>
+       </md-card-title>
+       <md-card-actions layout="row" layout-align="end center">
+         <md-button class="md-raised md-primary" ng-click="showInfo(item)">EN SAVOIR PLUS</md-button>
+
+       </md-card-actions>
+     </md-card>
+
+              </div>
+<div flex-xs flex-gt-xs="50" layout="column">
+<div ng-if="cases">
+       <h2>Pas de sites à visiter</h2>
+    <md-card>
+        <md-card-content>
+
+            No cases for the moment. Click on the <b> "+" </b> button below to add a new case.
+        </md-card-content>
+     </md-card>
+</div>
+    <md-card ng-repeat="item in activity | filter :{type:'2'} | filter : search">
+       <md-card-title>
+         <md-card-title-text>
+           <span class="md-headline">{{item.who}}</span>
+           <span class="md-subhead">RATING : {{item.stars}} STARS <br/>TEMPS MOYEN : {{item.time}} HEURES <br/> AMOUNT : {{item.amount}} FCFA <br/>
+
+           </span>
+         </md-card-title-text>
+         <md-card-title-media>
+           <div class="md-media-md card-media"><img src="./assets/img/{{item.icon}}"></div>
+         </md-card-title-media>
+       </md-card-title>
+       <md-card-actions layout="row" layout-align="end center">
+
+         <md-button class="md-raised md-primary" ng-click="showInfo(item)">EN SAVOIR PLUS</md-button>
+       </md-card-actions>
+     </md-card>
+
+              </div>
+              </div>
+
+              <div role="tabpanel"
+                   id="tab2-content"
+                   aria-labelledby="tab2"
+                   ng-switch-when="1"
+                   md-swipe-left="next()"
+                   md-swipe-right="previous()"
+                    layout="row" layout-align="center center">
+    <div flex-xs flex-gt-xs="90" layout="column">
+<div ng-if="cases">
+       <h2>No Cases</h2>
+    <md-card>
+        <md-card-content>
+
+            No cases for the moment. Click on the <b> "+" </b> button below to add a new case.
+        </md-card-content>
+     </md-card>
+</div>
+<form>
+<form ng-submit="solve()">
+    <md-card>
+       <md-card-title>
+         <md-card-title-text>
+           <span class="md-headline">ENTREZ VOS CONTRAINTES </span>
+           <span class="md-subhead">
+
+
+
+    <md-dialog-content style="max-width:800px;max-height:810px; ">
+
+            <div layout layout-sm="column">
+                <md-input-container flex>
+                    <!--<md-icon md-svg-src="./assets/img/ic_euro_24px.svg"></md-icon>-->
+                    <label>PRIX POUR VISITE (FCFA)</label>
+                    <input required ng-model="work.prix" type="number" step="500">
+
+                </md-input-container>
+                <md-input-container flex>
+                    <label>TEMPS POUR VISITE (HEURES) </label>
+                    <input required type="number" min="1"  ng-model="work.temps">
+                </md-input-container>
+                <md-input-container flex>
+                                <label>PREFERENCES</label>
+                                <md-select ng-model="work.pref" ng-change="change()">
+                                  <md-option value="OUI">
+                                    OUI
+                                  </md-option>
+                                  <md-option value="NON">
+                                    NON
+                                  </md-option>
+                                </md-select>
+      </md-input-container>
+            </div>
+
+          </md-dialog-content>
+          </span>
+          </md-card-title-text></md-card-title></md-card>
+
+       <div ng-if="pref2">
+
+
+        <md-card>
+        <md-card-title>
+        <md-card-title-text>
+        <span class="md-headline"> PREFERENCES </span>
+        <span class="md-subhead">
+
+
+
+           <div class="demo-select-all-checkboxes" flex="100">
+              <md-checkbox class="md-primary" ng-model="work.preference1" ng-true-value="true">
+               Si deux sites sont géographiquement proches mieux visiter les deux (Dans un rayon d\'un kilometre)
+              </md-checkbox>
+            </div>
+            <div class="demo-select-all-checkboxes" flex="100">
+               <md-checkbox class="md-primary" ng-model="work.preference2" ng-true-value="true">
+                J'aimerais visiter au moins un musée (Plusieurs musée si possible mais au moins un)
+               </md-checkbox>
+             </div>
+             <div class="demo-select-all-checkboxes" flex="100">
+                <md-checkbox class="md-primary" ng-model="work.preference3" ng-true-value="true">
+                 Je dois absolument visiter le Hilton (Le dernier étage du Hilton Hotel)
+                </md-checkbox>
+              </div>
+              <div class="demo-select-all-checkboxes" flex="100">
+                 <md-checkbox class="md-primary" ng-model="work.preference4" ng-true-value="true">
+                  J'aimerais visiter au moins un restaurant (Plusieurs si possible mais au moins un)
+                 </md-checkbox>
+               </div>
+               <div class="demo-select-all-checkboxes" flex="100">
+                  <md-checkbox class="md-primary" ng-model="work.preference5" ng-true-value="true">
+                   J'aimerais visiter au moins un monument (Plusieurs si possible mais au moins un)
+                  </md-checkbox>
+                </div>
+
+        </md-dialog-content>
+        </span>
+        </md-card-title-text>
+        </md-card-title>
+        </md-card>
+
+        <md-card>
+        <md-card-title>
+         <md-card-title-text>
+        <span class="md-headline"> ABSOLU </span>
+        <span class="md-subhead">
+
+
+       <md-dialog-content style="max-width:800px;max-height:810px; ">
+             <md-radio-group ng-model="work.preference2" ng-change="change2()">
+             <div class="row">
+             <div flex layout='row' layout-padding layout-align="start center" >
+          <div flex >
+            Je voudrais absolument visiter certains sites
+          </div>
+          <md-radio-button flex
+
+              value="true"
+              class="md-primary" >
+            Selectionner et choisir les sites que vous voulez à tout prix visiter
+          </md-radio-button>
+
+        </div>
+        </div>
+        </md-radio-group>
+        <md-input-container ng-if="plusieurs">
+
+        <md-select ng-model="work.sitesAbs" multiple>
+        <label> Les sites à visiter absolument </label>
+          <md-optgroup label="Sites">
+            <md-option ng-value="topping.value" ng-repeat="topping in activity">{{topping.who}}</md-option>
+          </md-optgroup>
+
+        </md-select>
+      </md-input-container>
+        </md-dialog-content>
+        </span>
+        </md-card-title-text>
+        </md-card-title>
+
+</md-card>
+        </div>
+           <div ng-if="pref3">
+
+
+        <md-card>
+        <md-card-title>
+        <md-card-title-text>
+        <span class="md-headline"> RESULTATS </span>
+        <span class="md-subhead">
+        Pour les contraintes demandées, nous vous proposons  une visite de <b>{{resultats.nombre}}<b> sites ci-dessous  pour un coup de <b> {{resultats.cout}} FCFA</b> pour <b> {{resultats.heures}} heures </b><br/>
+
+        </md-dialog-content>
+        </span>
+        </md-card-title-text>
+        </md-card-title>
+        </md-card>
+        <md-card ng-repeat="item in results  | filter : search">
+           <md-card-title>
+             <md-card-title-text>
+               <span class="md-headline">{{item.who}}</span>
+               <span class="md-subhead">RATING : {{item.stars}} STARS <br/>TEMPS MOYEN : {{item.time}} HEURES <br/> AMOUNT : {{item.amount}} FCFA <br/>
+
+               </span>
+             </md-card-title-text>
+             <md-card-title-media>
+               <div class="md-media-md card-media"><img src="./assets/img/{{item.icon}}"></div>
+             </md-card-title-media>
+           </md-card-title>
+           <md-card-actions layout="row" layout-align="end center">
+
+             <md-button class="md-raised md-primary" ng-click="showInfo(item)">EN SAVOIR PLUS</md-button>
+           </md-card-actions>
+         </md-card>
+
+
+
+        </div>
+         </div>
+        </form>
+    </md-dialog-content>
+    <md-card-actions layout="row" layout-align="end center">
+         <md-button class="md-fab md-primary md-fab-bottom-right" ng-click="solve()">
+            OK
+ <md-tooltip md-visible="false" md-direction="top">Lancer l'analyse </md-tooltip>
+          </md-button>
+
+       </md-card-actions>
+  </form>
+
+           </span>
+         </md-card-title-text>
+
+       </md-card-title>
+
+     </md-card>
+   </div>
+
+              </div>
+
+          </ng-switch>
+
+        </ui-view>
+      </md-content>
+    </div>
+
+        <script src="./bower_components/angular/angular.js"></script>
+        <script src="./bower_components/angular-animate/angular-animate.js"></script>
+        <script src="./bower_components/angular-aria/angular-aria.js"></script>
+        <script src="./bower_components/angular-material/angular-material.js"></script>
+        <script src="./bower_components/angular-messages/angular-messages.js"></script>
+        <script src="./bower_components/angular-icons/angular-material-icons.min.js"></script>
+        <script src="./bower_components/angular-route/angular-route.js"></script>
+        <script src="./bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="./bower_components/ngstorage/ngStorage.js"></script>
+        <script src="./bower_components/flow.js/dist/flow.js"></script>
+        <script src="./bower_components/ng-flow/dist/ng-flow-standalone.js"></script>
+        <script src="./bower_components/webcam/dist/webcam.min.js"></script>
+        <script src="./bower_components/webcamjs/webcam.min.js"></script>
+        <script src="./scripts/main.js"></script>
+         <script>window.$ = window.jQuery = require('./scripts/jquery.js');</script>
+        <script src="./scripts/google.js"></script>
+    <script src="./scripts/gmaps.js"></script>
+    <script>
+
+   map = new GMaps({
+  div: '#map',
+  zoom: 16,
+  lat: 3.8349366,
+  lng: 11.506780700000036
+});
+
+    </script>
+
+</body>
+</html>
