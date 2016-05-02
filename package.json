@@ -1,0 +1,29 @@
+{
+  "name": "RO PROJECT",
+  "version": "0.0.1",
+  "description": "Projet de RO recherche opérationnelle portant sur l'aide à la décision pour le tourisme",
+  "engines": {
+    "node": "5.9.0"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "4.13.3",
+    "semaphore": "*",
+    "lp_solve": "0.2.12",
+    "bower" : "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.heroku.com/djdjdjroprojetyaounde.git"
+  },
+  "keywords": [
+    "RO",
+    "Programmation linéaire",
+    "tourisme",
+    "yaounde"
+  ]
+  
+}
